@@ -4,7 +4,7 @@
 
 ### -> [**Download the full EURGBP dataset on getdata.finance**](https://getdata.finance/datasets/eurgbp)
 
-**EURGBP 12h OHLCV forex historical data** — ultra high-quality 12h OHLCV for **Euro / British Pound**. Clean `time, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
+**EURGBP 12h OHLCV forex historical data** — ultra high-quality 12h OHLCV for **Euro / British Pound**. Clean `datetime, open, high, low, close, volume` CSV for backtesting, algorithmic trading and quantitative research.
 
 ## Table of contents
 
@@ -22,12 +22,12 @@
 ## Why this dataset?
 
 - **Ultra high-quality 12h OHLCV** for **Euro / British Pound** (Forex)
-- **Clean CSV schema** — `time, open, high, low, close, volume` (no gaps in formatting)
+- **Clean CSV schema** — `datetime, open, high, low, close, volume` (no gaps in formatting)
 - **Free evaluation sample** on GitHub (`12h`) · **11 timeframes** on [getdata.finance](https://getdata.finance/datasets/eurgbp) · **14,119** `12h` rows in the full archive
 - Built for **backtesting**, **algorithmic trading** and **quantitative finance** workflows
 - **Weekly refresh** — [getdata.finance](https://getdata.finance) every **Saturday, 8am UTC+0**; GitHub `12h` sample updated in sync
 
-> **Sample on GitHub** · `EURGBP_12h.csv` (85 rows, `2026-07-10` -> `2026-09-02`, 5.59 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/eurgbp)** — **14,119** `12h` rows (full `1m`: 5,322,882), **11 timeframes**, `2001-11-28` -> `2026-09-02`.
+> **Sample on GitHub** · `EURGBP_12h.csv` (85 rows, `2026-07-10` -> `2026-09-02`, 5.60 KB). **Full archive on [getdata.finance](https://getdata.finance/datasets/eurgbp)** — **14,119** `12h` rows (full `1m`: 5,322,882), **11 timeframes**, `2001-11-28` -> `2026-09-02`.
 
 ## Download sample
 
@@ -46,7 +46,7 @@ Full archive & live chart on getdata.finance: **[https://getdata.finance/dataset
 | Instrument | Euro / British Pound · Forex | Euro / British Pound · Forex |
 | Timeframes | `12h` (sample) | **11** — 1m · 3m · 5m · 15m · 30m · 1H · 4H · 12H · 1D · 3D · 1W |
 | 12h rows | 85 | **14,119** |
-| Size | 5.59 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/eurgbp) |
+| Size | 5.60 KB | full ZIP on [getdata.finance](https://getdata.finance/datasets/eurgbp) |
 | Period | `2026-07-10` -> `2026-09-02` | `2001-11-28` -> `2026-09-02` |
 | File | `EURGBP_12h.csv` | ZIP on [getdata.finance](https://getdata.finance/datasets/eurgbp) |
 | Coverage report | — | [EURGBP coverage](https://getdata.finance/coverage/eurgbp) |
@@ -73,7 +73,7 @@ First and latest rows from the GitHub sample **`EURGBP_12h.csv`**:
 
 **First rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-07-10T00:00:00+00:00 | 0.85231 | 0.85255 | 0.85086 | 0.85156 | 75595 |
 | 2026-07-10T12:00:00+00:00 | 0.85156 | 0.85248 | 0.85113 | 0.85143 | 60678 |
@@ -83,7 +83,7 @@ First and latest rows from the GitHub sample **`EURGBP_12h.csv`**:
 
 **Last rows**
 
-| time | open | high | low | close | volume |
+| datetime | open | high | low | close | volume |
 | --- | --- | --- | --- | --- | --- |
 | 2026-08-31T00:00:00+00:00 | 0.85582 | 0.85677 | 0.85537 | 0.85646 | 80865 |
 | 2026-08-31T12:00:00+00:00 | 0.85646 | 0.85755 | 0.85608 | 0.85724 | 71575 |
@@ -95,7 +95,7 @@ First and latest rows from the GitHub sample **`EURGBP_12h.csv`**:
 
 | Column | Description |
 | --- | --- |
-| `time` | Bar open timestamp (UTC, ISO-8601). |
+| `datetime` | Bar open timestamp (UTC, ISO-8601). |
 | `open` | Opening price of the candlestick bar. |
 | `high` | Highest price during the bar. |
 | `low` | Lowest price during the bar. |
@@ -103,7 +103,7 @@ First and latest rows from the GitHub sample **`EURGBP_12h.csv`**:
 | `volume` | Tick volume (number of price updates) during the bar. |
 
 ```text
-time,open,high,low,close,volume
+datetime,open,high,low,close,volume
 ```
 
 ## Code examples
@@ -113,8 +113,8 @@ time,open,high,low,close,volume
 ```python
 import pandas as pd
 
-df = pd.read_csv('EURGBP_12h.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('EURGBP_12h.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 print(df.describe())
 ```
 
@@ -124,8 +124,8 @@ print(df.describe())
 import backtrader as bt
 import pandas as pd
 
-df = pd.read_csv('EURGBP_12h.csv', parse_dates=['time'])
-df.set_index('time', inplace=True)
+df = pd.read_csv('EURGBP_12h.csv', parse_dates=['datetime'])
+df.set_index('datetime', inplace=True)
 
 class PandasData(bt.feeds.PandasData):
     params = (('datetime', None), ('open', 'open'), ('high', 'high'),
@@ -143,8 +143,8 @@ cerebro.adddata(PandasData(dataname=df))
 import pandas as pd
 import vectorbt as vbt
 
-df = pd.read_csv('EURGBP_12h.csv', parse_dates=['time'])
-close = df.set_index('time')['close']
+df = pd.read_csv('EURGBP_12h.csv', parse_dates=['datetime'])
+close = df.set_index('datetime')['close']
 fast, slow = vbt.MA.run(close, 10), vbt.MA.run(close, 50)
 entries = fast.ma_crossed_above(slow)
 exits = fast.ma_crossed_below(slow)
